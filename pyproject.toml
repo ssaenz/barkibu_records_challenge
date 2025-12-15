@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "barkibu"
+version = "0.1.0"
+description = "A FastAPI REST API project"
+dependencies = [
+    "fastapi",
+    "uvicorn",
+    "pytest",
+    "httpx"
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
