@@ -1,6 +1,16 @@
-# Barkibu
+# Barkibu Medical Records Processing System
 
-A FastAPI REST API project.
+An intelligent system for extracting and structuring veterinary medical records from various document formats (PDF, images, Word, etc.).
+
+## Overview
+
+Barkibu helps veterinarians quickly access and interpret medical information by:
+
+- Uploading documents in any format (PDF, JPG, PNG, DOCX, TXT)
+- Automatically extracting text content
+- Structuring medical data (diagnoses, treatments, pet info, dates)
+- Reviewing and editing extracted information
+- Accessing standardized medical records
 
 ## Prerequisites & Local Development Setup
 

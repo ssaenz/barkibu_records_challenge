@@ -5,12 +5,18 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "barkibu"
 version = "0.1.0"
-description = "A FastAPI REST API project"
+description = "Intelligent medical records processing system for veterinary clinics"
 dependencies = [
     "fastapi",
     "uvicorn",
     "pytest",
-    "httpx"
+    "httpx",
+    "boto3",
+    "python-multipart",
+    "pydantic",
+    "sqlalchemy",
+    "psycopg2-binary",
+    "python-dotenv"
 ]
 
 [tool.pytest.ini_options]
