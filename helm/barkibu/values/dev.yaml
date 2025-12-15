@@ -1,0 +1,18 @@
+replicaCount: 1
+
+image:
+  repository: barkibu
+  tag: latest
+  pullPolicy: Never
+
+service:
+  type: NodePort
+  nodePort: 30000
+
+resources:
+  requests:
+    memory: "64Mi"
+    cpu: "50m"
+  limits:
+    memory: "128Mi"
+    cpu: "250m"

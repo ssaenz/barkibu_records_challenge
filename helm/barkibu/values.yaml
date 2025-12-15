@@ -1,0 +1,27 @@
+# Default values for barkibu
+replicaCount: 3
+
+image:
+  repository: barkibu
+  tag: latest
+  pullPolicy: Never
+
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  type: NodePort
+  port: 8000
+  targetPort: 8000
+  nodePort: 30000
+
+resources:
+  requests:
+    memory: "128Mi"
+    cpu: "100m"
+  limits:
+    memory: "256Mi"
+    cpu: "500m"
+
+app:
+  name: barkibu
