@@ -1,13 +1,13 @@
-"""Tesseract OCR Adapter - Implementation of OCRService using Tesseract"""
+"""Tesseract OCR Adapter - Implementation of TextExtractor using Tesseract"""
 
 import pytesseract
 from pdf2image import convert_from_bytes
 from PIL import Image
 from io import BytesIO
-from app.domain.ocr_service import OCRService
+from app.domain.text_extractor import TextExtractor
 
 
-class TesseractOCRAdapter(OCRService):
+class TesseractOCRAdapter(TextExtractor):
     def extract_text(self, file_data: bytes, file_type: str) -> str:
         try:
             if file_type.lower() == "pdf":

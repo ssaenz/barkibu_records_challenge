@@ -1,13 +1,13 @@
 import uuid
 from app.domain.models.document import Document
 from app.domain.document_repository import DocumentRepository
-from app.domain.ocr_service import OCRService
+from app.domain.text_extractor import TextExtractor
 
 
 class DocumentService:
-    def __init__(self, repository: DocumentRepository, ocr: OCRService):
+    def __init__(self, repository: DocumentRepository, text_extractor: TextExtractor):
         self.repository = repository
-        self.ocr = ocr
+        self.text_extractor = text_extractor
 
     def create_document(
         self,
@@ -16,7 +16,7 @@ class DocumentService:
         file_data: bytes,
     ) -> Document:
         document_id = str(uuid.uuid4())
-        extracted_text = self.ocr.extract_text(file_data, file_type)
+        extracted_text = self.text_extractor.extract_text(file_data, file_type)
         document = Document(
             id=document_id,
             filename=filename,

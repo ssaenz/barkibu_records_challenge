@@ -1,15 +1,15 @@
-"""OCR Service interface - Contract for OCR adapters"""
+"""Text Extractor interface - Contract for text extraction implementations"""
 
 from abc import ABC, abstractmethod
 
 
-class OCRService(ABC):
-    """Interface for Optical Character Recognition (OCR) operations"""
+class TextExtractor(ABC):
+    """Interface for extracting text from documents"""
 
     @abstractmethod
     def extract_text(self, file_data: bytes, file_type: str) -> str:
         """
-        Extract text from document using OCR
+        Extract text from document
 
         Args:
             file_data: Raw file bytes
