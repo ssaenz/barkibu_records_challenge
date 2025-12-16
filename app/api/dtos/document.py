@@ -9,7 +9,6 @@ class DocumentUploadResponse(BaseModel):
     filename: str = Field(..., description="Original filename")
     file_type: str = Field(..., description="File type (pdf, jpg, docx, txt, etc.)")
     file_size: int = Field(..., description="File size in bytes")
-    path: str = Field(..., description="File storage path")
     created_at: datetime = Field(..., description="Creation timestamp")
 
     @staticmethod
@@ -19,6 +18,5 @@ class DocumentUploadResponse(BaseModel):
             filename=document.filename,
             file_type=document.file_type,
             file_size=document.file_size,
-            path=document.path,
             created_at=document.created_at,
         )

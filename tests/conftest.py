@@ -1,31 +1,18 @@
 """Pytest configuration and fixtures"""
-import os
+
 import pytest
-from moto import mock_aws
-import boto3
+import os
+from pathlib import Path
 
 
-@pytest.fixture(scope="session", autouse=True)
-def setup_aws_credentials():
-    """Set fake AWS credentials for testing"""
-    os.environ["AWS_ACCESS_KEY_ID"] = "testing"
-    os.environ["AWS_SECRET_ACCESS_KEY"] = "testing"
-    os.environ["AWS_S3_REGION"] = "us-east-1"
+# Load test environment variables before any imports
+def pytest_configure(config):
+    """Load .env.test file before running tests"""
+    env_test_path = Path(__file__).parent.parent / ".env.test"
+    if env_test_path.exists():
+        from dotenv import load_dotenv
 
-
-@pytest.fixture(autouse=True)
-def mock_s3_with_bucket():
-    """Create mocked S3 with test bucket before each test"""
-    with mock_aws():
-        # Create S3 client and bucket
-        s3_client = boto3.client(
-            "s3",
-            region_name="us-east-1",
-            aws_access_key_id="testing",
-            aws_secret_access_key="testing",
-        )
-        s3_client.create_bucket(Bucket="barkibu-medical-records")
-        yield
+        load_dotenv(env_test_path, override=True)
 
 
 @pytest.fixture(autouse=True)
@@ -38,3 +25,15 @@ def reset_database():
     # Recreate all tables
     Base.metadata.create_all(bind=engine)
     yield
+
+
+@pytest.fixture
+def db_session():
+    """Provide a database session for tests"""
+    from app.adapters.postgres.database import SessionLocal
+
+    session = SessionLocal()
+    try:
+        yield session
+    finally:
+        session.close()

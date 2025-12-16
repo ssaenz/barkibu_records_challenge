@@ -14,9 +14,15 @@ dependencies = [
     "boto3",
     "python-multipart",
     "pydantic",
+    "pydantic-settings",
     "sqlalchemy",
     "psycopg2-binary",
-    "python-dotenv"
+    "python-dotenv",
+    "pytesseract>=0.3.10",
+    "pdf2image>=1.16.3",
+    "pillow>=10.0.0",
+    "python-docx>=0.8.11",
+    "moto[s3]>=4.2.0"
 ]
 
 [tool.pytest.ini_options]

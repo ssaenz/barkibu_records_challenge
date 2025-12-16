@@ -1,0 +1,19 @@
+Patient: John Doe
+Date: December 16, 2025
+Chief Complaint: Annual checkup
+
+History of Present Illness:
+Patient presents for routine annual physical examination.
+No acute complaints. Patient reports feeling well overall.
+
+Vital Signs:
+Blood Pressure: 120/80 mmHg
+Heart Rate: 72 bpm
+Temperature: 98.6°F
+Weight: 175 lbs
+
+Assessment:
+Patient is in good health. Continue current medications.
+Schedule follow-up in 12 months.
+
+Physician: Dr. Jane Smith, MD

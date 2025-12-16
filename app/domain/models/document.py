@@ -1,4 +1,5 @@
 """Core domain models - Pure Python objects, no external dependencies"""
+
 from datetime import datetime, timezone
 from typing import Optional
 
@@ -11,7 +12,8 @@ class Document:
         filename: str,
         file_type: str,
         file_size: int,
-        path: str,
+        file_data: bytes,
+        extracted_text: Optional[str] = None,
         created_at: Optional[datetime] = None,
         updated_at: Optional[datetime] = None,
     ):
@@ -19,7 +21,8 @@ class Document:
         self.filename = filename
         self.file_type = file_type
         self.file_size = file_size
-        self.path = path
+        self.file_data = file_data
+        self.extracted_text = extracted_text
         self.created_at = created_at or datetime.now(timezone.utc)
         self.updated_at = updated_at or datetime.now(timezone.utc)
 

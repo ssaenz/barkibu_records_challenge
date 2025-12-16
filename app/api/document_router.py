@@ -1,6 +1,6 @@
 from fastapi import APIRouter, UploadFile, File, Depends, HTTPException, status
 from app.api.dtos.document import DocumentUploadResponse
-from app.domain.services.document_service import DocumentService
+from app.domain.document_service import DocumentService
 from app.core.dependencies import get_document_service
 
 router = APIRouter()
@@ -21,6 +21,11 @@ async def upload_document(
         )
 
     file_content = await file.read()
+    if len(file_content) == 0:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="File is empty. Please upload a file with content",
+        )
     if len(file_content) > MAX_FILE_SIZE_BYTES:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,

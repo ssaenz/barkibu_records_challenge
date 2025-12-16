@@ -10,3 +10,5 @@ venv/
 .vscode/
 *.swp
 *.swo
+.env
+test.db

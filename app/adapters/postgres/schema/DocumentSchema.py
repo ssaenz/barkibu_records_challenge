@@ -1,10 +1,7 @@
 from datetime import datetime, timezone
-from sqlalchemy import Column, String, Integer, DateTime
-from sqlalchemy.orm import declarative_base
+from sqlalchemy import Column, String, Integer, DateTime, Text, LargeBinary
+from app.adapters.postgres.database import Base
 from app.domain.models.document import Document
-
-
-Base = declarative_base()
 
 
 class DocumentSchema(Base):
@@ -14,7 +11,8 @@ class DocumentSchema(Base):
     filename = Column(String(255), nullable=False)
     file_type = Column(String(50), nullable=False)
     file_size = Column(Integer, nullable=False)
-    path = Column(String(500), nullable=False)
+    file_data = Column(LargeBinary, nullable=False)
+    extracted_text = Column(Text, nullable=True)
     created_at = Column(
         DateTime, nullable=False, default=lambda: datetime.now(timezone.utc)
     )
@@ -35,7 +33,8 @@ class DocumentSchema(Base):
         orm.filename = domain.filename
         orm.file_type = domain.file_type
         orm.file_size = domain.file_size
-        orm.path = domain.path
+        orm.file_data = domain.file_data
+        orm.extracted_text = domain.extracted_text
         orm.created_at = domain.created_at
         orm.updated_at = domain.updated_at
         return orm
