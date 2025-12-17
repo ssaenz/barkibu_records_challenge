@@ -12,12 +12,55 @@ export interface VeterinaryInfo {
   phone?: string;
 }
 
+export interface PhysicalExamination {
+  weight?: number;
+  temperature?: number;
+  heart_rate?: number;
+  respiratory_rate?: number;
+  mucous_membranes?: string;
+  crt?: string;
+  hydration_status?: string;
+  general_condition?: string;
+  abdominal_palpation?: string;
+  findings?: string[];
+}
+
+export interface Medication {
+  name: string;
+  dosage?: string;
+  frequency?: string;
+  duration?: string;
+  route?: string;
+  observations?: string;
+}
+
+export interface LaboratoryTest {
+  test_name: string;
+  test_date?: string;
+  results?: string | Record<string, any>;
+  findings?: string[];
+}
+
+export interface Vaccination {
+  vaccine_name: string;
+  date_administered?: string;
+  next_dose_date?: string;
+  applied: boolean;
+}
+
 export interface Visit {
-  date?: string;
+  visit_date?: string;
+  visit_type?: string;
+  clinic_name?: string;
   reason?: string;
-  diagnosis?: string;
-  treatment?: string;
-  notes?: string;
+  anamnesis?: string;
+  physical_examination?: PhysicalExamination;
+  diagnosis?: string[];
+  treatment?: Medication[];
+  plan?: string;
+  laboratory_tests?: LaboratoryTest[];
+  vaccinations?: Vaccination[];
+  observations?: string;
 }
 
 export interface MedicalRecord {
