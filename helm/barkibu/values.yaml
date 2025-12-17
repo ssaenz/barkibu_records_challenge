@@ -4,16 +4,15 @@ replicaCount: 3
 image:
   repository: barkibu
   tag: latest
-  pullPolicy: Never
+  pullPolicy: IfNotPresent
 
 nameOverride: ""
 fullnameOverride: ""
 
 service:
-  type: NodePort
+  type: ClusterIP
   port: 8000
   targetPort: 8000
-  nodePort: 30000
 
 resources:
   requests:
@@ -26,8 +25,20 @@ resources:
 app:
   name: barkibu
 
+postgres:
+  image:
+    repository: postgres
+    tag: 15-alpine
+  auth:
+    username: ""
+    password: ""
+    database: ""
+  persistence:
+    enabled: true
+    size: 10Gi
+  service:
+    port: 5432
+
 # Application environment variables
-env:
-  DATABASE_URL: "postgresql://user:password@postgres:5432/barkibu"
-  ENVIRONMENT: "production"
+env: {}
 

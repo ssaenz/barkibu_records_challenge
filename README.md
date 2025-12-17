@@ -103,7 +103,7 @@ pip install -e .
 
 ## Setup
 
-### Running Locally
+### Running Locally (Python)
 
 1. Create and activate virtual environment:
 
@@ -115,22 +115,16 @@ source .venv/bin/activate
 2. Install dependencies:
 
 ```bash
-pip install -r requirements.txt
-```
-
-Or with pyproject.toml:
-
-```bash
 pip install -e .
 ```
 
-## Run the API
+3. Run the API:
 
 ```bash
 uvicorn app.main:app --reload
 ```
 
-## Run tests
+4. Run tests:
 
 ```bash
 pytest
@@ -154,82 +148,64 @@ docker run -p 8000:8000 barkibu
 
 The API will be available at http://localhost:8000
 
-## Kubernetes
+## Kubernetes (Helm)
 
-To deploy the application to a Kubernetes cluster:
-
-1. Build and push the Docker image to your registry:
-
-```bash
-docker build -t your-registry/barkibu:latest .
-docker push your-registry/barkibu:latest
-```
-
-2. Update the image reference in `k8s-deployment.yaml` if needed.
-
-3. Apply the Kubernetes manifests:
-
-```bash
-kubectl apply -f k8s-deployment.yaml
-```
-
-4. Check the deployment status:
-
-```bash
-kubectl get pods
-kubectl get services
-```
-
-The service will be accessible within the cluster at `barkibu-service:8000`
-
-## Helm Deployment
-
-To deploy the application using Helm:
+To deploy the application to a Kubernetes cluster using Helm:
 
 ### Local Development (Minikube)
 
+1. Start Minikube:
+
 ```bash
-# Build image in Minikube
-eval $(minikube docker-env)
+minikube start
+```
+
+2. Point Docker to Minikube's daemon:
+
+```bash
+eval $(minikube -p minikube docker-env)
+```
+
+3. Build the image directly in Minikube:
+
+```bash
 docker build -t barkibu:latest .
-
-# Deploy with dev values
-helm install barkibu ./helm/barkibu -f ./helm/barkibu/values/dev.yaml
-
-# Or upgrade existing release
-helm upgrade barkibu ./helm/barkibu -f ./helm/barkibu/values/dev.yaml
 ```
 
-### Check Deployment
+4. Deploy with Helm using development values:
 
 ```bash
-# List Helm releases
-helm list
+# Install or Upgrade
+helm upgrade --install barkibu ./helm/barkibu -f ./helm/barkibu/values/dev.yaml
+```
 
-# Get release details
-helm status barkibu
+5. Verify Deployment:
 
-# Check pods
-kubectl get pods -l app=barkibu
+```bash
+# Check pods (you should see app and postgres pods)
+kubectl get pods
 
-# Get service URL
+# Check logs if needed
+kubectl logs -l app=barkibu
+```
+
+6. Access the Application:
+
+```bash
+# Get the service URL
 minikube service barkibu-service --url
+
+# Test health endpoint
+curl $(minikube service barkibu-service --url)/health
 ```
 
-### Adding New Environments
+### Production / Other Environments
 
-To add a new environment (e.g., staging, production):
+To deploy to other environments (staging, prod):
 
-1. Create a new values file:
-
-```bash
-cp ./helm/barkibu/values/dev.yaml ./helm/barkibu/values/<env-name>.yaml
-```
-
-2. Update the values for your environment
-
-3. Deploy:
+1. Create a new values file (e.g., `values/prod.yaml`) with specific configuration.
+2. Deploy using that file:
 
 ```bash
-helm install barkibu ./helm/barkibu -f ./helm/barkibu/values/<env-name>.yaml
+helm upgrade --install barkibu ./helm/barkibu -f ./helm/barkibu/values/prod.yaml
 ```

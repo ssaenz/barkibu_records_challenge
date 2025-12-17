@@ -16,3 +16,21 @@ resources:
   limits:
     memory: "128Mi"
     cpu: "250m"
+
+postgres:
+  image:
+    repository: postgres
+    tag: 15-alpine
+  auth:
+    username: user
+    password: password
+    database: barkibu
+  persistence:
+    enabled: false
+    size: 1Gi
+  service:
+    port: 5432
+
+env:
+  DATABASE_URL: "postgresql://user:password@postgres-service:5432/barkibu"
+  ENVIRONMENT: "development"

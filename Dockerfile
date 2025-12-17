@@ -9,11 +9,11 @@ RUN apt-get update && apt-get install -y \
     poppler-utils \
     && rm -rf /var/lib/apt/lists/*
 
-COPY pyproject.toml .
+COPY . .
 
 RUN pip install --no-cache-dir .
 
-COPY . .
+RUN python -m spacy download es_core_news_sm
 
 EXPOSE 8000
 

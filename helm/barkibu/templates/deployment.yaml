@@ -12,6 +12,16 @@ spec:
       labels:
         app: {{ .Values.app.name }}
     spec:
+      initContainers:
+      - name: run-migrations
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        command: ["alembic", "upgrade", "head"]
+        env:
+        {{- range $key, $value := .Values.env }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
+        {{- end }}
       containers:
       - name: {{ .Values.app.name }}
         image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
