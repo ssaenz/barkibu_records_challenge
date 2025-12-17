@@ -25,6 +25,16 @@ resources:
 app:
   name: barkibu
 
+frontend:
+  image:
+    repository: barkibu-frontend
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 80
+    nodePort: 30001
+
 postgres:
   image:
     repository: postgres

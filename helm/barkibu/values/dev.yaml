@@ -17,6 +17,15 @@ resources:
     memory: "128Mi"
     cpu: "250m"
 
+frontend:
+  image:
+    repository: barkibu-frontend
+    tag: latest
+    pullPolicy: Never
+  service:
+    type: NodePort
+    nodePort: 30001
+
 postgres:
   image:
     repository: postgres

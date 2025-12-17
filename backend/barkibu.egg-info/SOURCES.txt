@@ -1,0 +1,9 @@
+README.md
+pyproject.toml
+app/main.py
+barkibu.egg-info/PKG-INFO
+barkibu.egg-info/SOURCES.txt
+barkibu.egg-info/dependency_links.txt
+barkibu.egg-info/requires.txt
+barkibu.egg-info/top_level.txt
+tests/test_upload.py
