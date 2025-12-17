@@ -20,7 +20,7 @@ function App() {
     formData.append('file', file);
 
     try {
-      const response = await axios.post<DocumentResponse>('/api/v1/documents', formData, {
+      const response = await axios.post<DocumentResponse>('/api/v1/document', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

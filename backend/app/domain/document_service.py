@@ -7,6 +7,8 @@ from app.domain.document_repository import DocumentRepository
 from app.domain.text_extractor import TextExtractor
 from app.domain.medical_record_extractor import MedicalRecordExtractor
 
+from app.domain.models.medical_record import MedicalRecord
+
 logger = logging.getLogger(__name__)
 
 
@@ -66,3 +68,14 @@ class DocumentService:
         )
         saved_document = self.repository.save(document)
         return saved_document
+
+    def update_medical_record(
+        self, document_id: str, medical_record: MedicalRecord
+    ) -> Optional[Document]:
+        document = self.repository.get_by_id(document_id)
+        if not document:
+            return None
+
+        document.medical_record = medical_record
+        updated_document = self.repository.update(document)
+        return updated_document

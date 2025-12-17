@@ -207,10 +207,10 @@ class TestDocumentUpload:
             content = f.read()
 
         return client.post(
-            "/api/v1/documents", files={"file": (filename, BytesIO(content), mime_type)}
+            "/api/v1/document", files={"file": (filename, BytesIO(content), mime_type)}
         )
 
     def _upload_content(self, filename: str, content: bytes, mime_type: str):
         return client.post(
-            "/api/v1/documents", files={"file": (filename, BytesIO(content), mime_type)}
+            "/api/v1/document", files={"file": (filename, BytesIO(content), mime_type)}
         )
