@@ -1,4 +1,5 @@
 from fastapi import APIRouter, UploadFile, File, Depends, HTTPException, status
+from fastapi.concurrency import run_in_threadpool
 from app.api.dtos.document import DocumentUploadResponse
 from app.domain.document_service import DocumentService
 from app.core.dependencies import get_document_service
@@ -31,7 +32,10 @@ async def upload_document(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="File too large. Maximum size is 50MB",
         )
-    document = document_service.create_document(file.filename, file_type, file_content)
+
+    document = await run_in_threadpool(
+        document_service.create_document, file.filename, file_type, file_content
+    )
     return DocumentUploadResponse.from_domain(document)
 
 

@@ -1,32 +1,57 @@
 import pytesseract
+import logging
+import time
+import concurrent.futures
 from pdf2image import convert_from_bytes
 from PIL import Image
 from io import BytesIO
 from app.domain.text_extractor import TextExtractor
 
+logger = logging.getLogger(__name__)
+
 
 class TesseractOCRAdapter(TextExtractor):
     def extract_text(self, file_data: bytes, file_type: str) -> str:
         try:
+            start_time = time.time()
+            logger.info(f"Starting OCR for file type: {file_type}")
+            result = ""
             if file_type.lower() == "pdf":
-                return self._extract_from_pdf(file_data)
+                result = self._extract_from_pdf(file_data)
             elif file_type.lower() in ["jpg", "jpeg", "png"]:
-                return self._extract_from_image(file_data)
+                result = self._extract_from_image(file_data)
             elif file_type.lower() == "txt":
-                return file_data.decode("utf-8", errors="ignore")
+                result = file_data.decode("utf-8", errors="ignore")
             elif file_type.lower() == "docx":
-                return self._extract_from_docx(file_data)
-            else:
-                return ""
+                result = self._extract_from_docx(file_data)
+
+            duration = time.time() - start_time
+            logger.info(f"OCR completed for {file_type} in {duration:.2f} seconds")
+            return result
         except Exception as e:
+            logger.error(f"OCR failed: {e}")
             return ""
 
     def _extract_from_pdf(self, file_data: bytes) -> str:
+        start_time = time.time()
         images = convert_from_bytes(file_data)
-        text = ""
-        for image in images:
-            text += pytesseract.image_to_string(image) + "\n"
-        return text.strip()
+        logger.info(
+            f"PDF converted to {len(images)} images in {time.time() - start_time:.2f} seconds"
+        )
+
+        def process_page(args):
+            i, image = args
+            page_start = time.time()
+            text = pytesseract.image_to_string(image)
+            logger.info(
+                f"OCR for page {i+1} took {time.time() - page_start:.2f} seconds"
+            )
+            return text
+
+        with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
+            results = list(executor.map(process_page, enumerate(images)))
+
+        return "\n".join(results).strip()
 
     def _extract_from_image(self, file_data: bytes) -> str:
         image = Image.open(BytesIO(file_data))

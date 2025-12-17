@@ -11,11 +11,11 @@ service:
 
 resources:
   requests:
-    memory: "512Mi"
-    cpu: "200m"
+    memory: "2Gi"
+    cpu: "2000m"
   limits:
-    memory: "1Gi"
-    cpu: "1000m"
+    memory: "6Gi"
+    cpu: "8000m"
 
 frontend:
   image:

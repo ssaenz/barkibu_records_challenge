@@ -1,3 +1,4 @@
+from functools import lru_cache
 from fastapi import Depends
 from app.domain.document_service import DocumentService
 from app.domain.document_repository import DocumentRepository
@@ -21,6 +22,7 @@ def get_text_extractor() -> TextExtractor:
     return TesseractOCRAdapter()
 
 
+@lru_cache()
 def get_medical_record_extractor() -> MedicalRecordExtractor:
     return SpacyMedicalRecordExtractor(model_name=config.spacy_model)
 

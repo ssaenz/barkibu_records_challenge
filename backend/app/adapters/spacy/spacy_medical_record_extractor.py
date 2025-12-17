@@ -1,4 +1,6 @@
 import spacy
+import logging
+import time
 
 from app.domain.medical_record_extractor import MedicalRecordExtractor
 from app.domain.models.medical_record import MedicalRecord
@@ -8,11 +10,16 @@ from app.adapters.spacy.extractors.veterinary_info_extractor import (
 )
 from app.adapters.spacy.extractors.visit_extractor import VisitExtractor
 
+logger = logging.getLogger(__name__)
+
 
 class SpacyMedicalRecordExtractor(MedicalRecordExtractor):
 
     def __init__(self, model_name: str = "es_core_news_sm"):
+        logger.info(f"Loading Spacy model: {model_name}")
+        start_time = time.time()
         self.nlp = spacy.load(model_name)
+        logger.info(f"Spacy model loaded in {time.time() - start_time:.2f} seconds")
         self._add_entity_ruler()
 
         self.pet_info_extractor = PetInfoExtractor(self.nlp)
@@ -48,6 +55,11 @@ class SpacyMedicalRecordExtractor(MedicalRecordExtractor):
     def extract(self, text: str) -> MedicalRecord:
         if not text or not text.strip():
             return MedicalRecord()
+
+        start_time = time.time()
+        logger.info("Starting Spacy extraction")
+        doc = self.nlp(text)
+        logger.info(f"Spacy NLP processing took {time.time() - start_time:.2f} seconds")
 
         doc = self.nlp(text)
 
