@@ -16,7 +16,7 @@ export const MedicalRecordEditor: React.FC<MedicalRecordEditorProps> = ({ initia
     }
   }, [initialData]);
 
-  const updatePetInfo = (field: string, value: string) => {
+  const updatePetInfo = (field: string, value: any) => {
     const newData = { ...data, pet_info: { ...data.pet_info, [field]: value } };
     setData(newData);
     onSave?.(newData);
@@ -149,20 +149,39 @@ export const MedicalRecordEditor: React.FC<MedicalRecordEditorProps> = ({ initia
             </div>
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Age</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Birth Date</label>
                 <input
                   type="text"
-                  value={data.pet_info?.age || ''}
-                  onChange={(e) => updatePetInfo('age', e.target.value)}
+                  value={data.pet_info?.birth_date || ''}
+                  onChange={(e) => updatePetInfo('birth_date', e.target.value)}
+                  className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2"
+                  placeholder="YYYY-MM-DD"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Weight (kg)</label>
+                <input
+                  type="number"
+                  value={data.pet_info?.weight || ''}
+                  onChange={(e) => updatePetInfo('weight', parseFloat(e.target.value) || 0)}
                   className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Weight</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Sex</label>
                 <input
                   type="text"
-                  value={data.pet_info?.weight || ''}
-                  onChange={(e) => updatePetInfo('weight', e.target.value)}
+                  value={data.pet_info?.sex || ''}
+                  onChange={(e) => updatePetInfo('sex', e.target.value)}
+                  className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Microchip</label>
+                <input
+                  type="text"
+                  value={data.pet_info?.microchip || ''}
+                  onChange={(e) => updatePetInfo('microchip', e.target.value)}
                   className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2"
                 />
               </div>
@@ -180,8 +199,8 @@ export const MedicalRecordEditor: React.FC<MedicalRecordEditorProps> = ({ initia
               <label className="block text-sm font-medium text-gray-700 mb-1">Clinic Name</label>
               <input
                 type="text"
-                value={data.veterinary_info?.name || ''}
-                onChange={(e) => updateVetInfo('name', e.target.value)}
+                value={data.veterinary_info?.clinic_name || ''}
+                onChange={(e) => updateVetInfo('clinic_name', e.target.value)}
                 className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2"
               />
             </div>
@@ -190,8 +209,8 @@ export const MedicalRecordEditor: React.FC<MedicalRecordEditorProps> = ({ initia
                 <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
                 <input
                   type="text"
-                  value={data.veterinary_info?.address || ''}
-                  onChange={(e) => updateVetInfo('address', e.target.value)}
+                  value={data.veterinary_info?.clinic_address || ''}
+                  onChange={(e) => updateVetInfo('clinic_address', e.target.value)}
                   className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2"
                 />
               </div>
@@ -199,8 +218,8 @@ export const MedicalRecordEditor: React.FC<MedicalRecordEditorProps> = ({ initia
                 <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
                 <input
                   type="text"
-                  value={data.veterinary_info?.phone || ''}
-                  onChange={(e) => updateVetInfo('phone', e.target.value)}
+                  value={data.veterinary_info?.clinic_phone || ''}
+                  onChange={(e) => updateVetInfo('clinic_phone', e.target.value)}
                   className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2"
                 />
               </div>
@@ -297,6 +316,60 @@ export const MedicalRecordEditor: React.FC<MedicalRecordEditorProps> = ({ initia
                           className="w-full rounded border-gray-300 text-sm p-1"
                         />
                       </div>
+                      <div>
+                        <label className="block text-[10px] font-medium text-gray-500 mb-1">Resp. Rate</label>
+                        <input
+                          type="number"
+                          value={visit.physical_examination?.respiratory_rate || ''}
+                          onChange={(e) => updatePhysicalExam(index, 'respiratory_rate', parseFloat(e.target.value))}
+                          className="w-full rounded border-gray-300 text-sm p-1"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[10px] font-medium text-gray-500 mb-1">Mucous Memb.</label>
+                        <input
+                          type="text"
+                          value={visit.physical_examination?.mucous_membranes || ''}
+                          onChange={(e) => updatePhysicalExam(index, 'mucous_membranes', e.target.value)}
+                          className="w-full rounded border-gray-300 text-sm p-1"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[10px] font-medium text-gray-500 mb-1">CRT</label>
+                        <input
+                          type="text"
+                          value={visit.physical_examination?.crt || ''}
+                          onChange={(e) => updatePhysicalExam(index, 'crt', e.target.value)}
+                          className="w-full rounded border-gray-300 text-sm p-1"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[10px] font-medium text-gray-500 mb-1">Hydration</label>
+                        <input
+                          type="text"
+                          value={visit.physical_examination?.hydration_status || ''}
+                          onChange={(e) => updatePhysicalExam(index, 'hydration_status', e.target.value)}
+                          className="w-full rounded border-gray-300 text-sm p-1"
+                        />
+                      </div>
+                      <div className="col-span-2">
+                        <label className="block text-[10px] font-medium text-gray-500 mb-1">General Condition</label>
+                        <input
+                          type="text"
+                          value={visit.physical_examination?.general_condition || ''}
+                          onChange={(e) => updatePhysicalExam(index, 'general_condition', e.target.value)}
+                          className="w-full rounded border-gray-300 text-sm p-1"
+                        />
+                      </div>
+                      <div className="col-span-3">
+                        <label className="block text-[10px] font-medium text-gray-500 mb-1">Abdominal Palpation</label>
+                        <input
+                          type="text"
+                          value={visit.physical_examination?.abdominal_palpation || ''}
+                          onChange={(e) => updatePhysicalExam(index, 'abdominal_palpation', e.target.value)}
+                          className="w-full rounded border-gray-300 text-sm p-1"
+                        />
+                      </div>
                       <div className="col-span-3">
                         <label className="block text-[10px] font-medium text-gray-500 mb-1">Findings</label>
                         <textarea
@@ -313,6 +386,121 @@ export const MedicalRecordEditor: React.FC<MedicalRecordEditorProps> = ({ initia
                   {/* Diagnosis */}
                   {renderStringArray(index, 'diagnosis', visit.diagnosis, 'Diagnosis')}
 
+                  {/* Laboratory Tests */}
+                  <div className="col-span-12">
+                    <label className="block text-xs font-medium text-gray-500 mb-1">Laboratory Tests</label>
+                    {visit.laboratory_tests?.map((test, testIndex) => (
+                      <div key={testIndex} className="bg-gray-50 p-2 rounded mb-2 border border-gray-200">
+                        <div className="grid grid-cols-2 gap-2 mb-2">
+                          <input
+                            placeholder="Test Name"
+                            value={test.test_name}
+                            onChange={(e) => {
+                              const newTests = [...(visit.laboratory_tests || [])];
+                              newTests[testIndex] = { ...test, test_name: e.target.value };
+                              updateVisit(index, 'laboratory_tests', newTests);
+                            }}
+                            className="rounded border-gray-300 text-xs p-1"
+                          />
+                          <input
+                            placeholder="Date"
+                            value={test.test_date || ''}
+                            onChange={(e) => {
+                              const newTests = [...(visit.laboratory_tests || [])];
+                              newTests[testIndex] = { ...test, test_date: e.target.value };
+                              updateVisit(index, 'laboratory_tests', newTests);
+                            }}
+                            className="rounded border-gray-300 text-xs p-1"
+                          />
+                        </div>
+                        <textarea
+                          placeholder="Results"
+                          value={typeof test.results === 'string' ? test.results : JSON.stringify(test.results)}
+                          onChange={(e) => {
+                            const newTests = [...(visit.laboratory_tests || [])];
+                            newTests[testIndex] = { ...test, results: e.target.value };
+                            updateVisit(index, 'laboratory_tests', newTests);
+                          }}
+                          rows={2}
+                          className="w-full rounded border-gray-300 text-xs p-1 mb-2"
+                        />
+                        <button
+                          onClick={() => {
+                            const newTests = [...(visit.laboratory_tests || [])];
+                            newTests.splice(testIndex, 1);
+                            updateVisit(index, 'laboratory_tests', newTests);
+                          }}
+                          className="text-red-500 hover:text-red-700 text-xs flex items-center gap-1"
+                        >
+                          <Trash2 className="w-3 h-3" /> Remove Test
+                        </button>
+                      </div>
+                    ))}
+                    <button
+                      onClick={() => updateVisit(index, 'laboratory_tests', [...(visit.laboratory_tests || []), { test_name: '' }])}
+                      className="text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1"
+                    >
+                      <Plus className="w-3 h-3" /> Add Lab Test
+                    </button>
+                  </div>
+
+                  {/* Vaccinations */}
+                  <div className="col-span-12">
+                    <label className="block text-xs font-medium text-gray-500 mb-1">Vaccinations</label>
+                    {visit.vaccinations?.map((vax, vaxIndex) => (
+                      <div key={vaxIndex} className="flex gap-2 mb-2 items-center bg-green-50 p-2 rounded">
+                        <input
+                          placeholder="Vaccine Name"
+                          value={vax.vaccine_name}
+                          onChange={(e) => {
+                            const newVax = [...(visit.vaccinations || [])];
+                            newVax[vaxIndex] = { ...vax, vaccine_name: e.target.value };
+                            updateVisit(index, 'vaccinations', newVax);
+                          }}
+                          className="flex-1 rounded border-gray-300 text-xs p-1"
+                        />
+                        <input
+                          placeholder="Date Administered"
+                          value={vax.date_administered || ''}
+                          onChange={(e) => {
+                            const newVax = [...(visit.vaccinations || [])];
+                            newVax[vaxIndex] = { ...vax, date_administered: e.target.value };
+                            updateVisit(index, 'vaccinations', newVax);
+                          }}
+                          className="w-24 rounded border-gray-300 text-xs p-1"
+                        />
+                        <label className="flex items-center gap-1 text-xs">
+                          <input
+                            type="checkbox"
+                            checked={vax.applied}
+                            onChange={(e) => {
+                              const newVax = [...(visit.vaccinations || [])];
+                              newVax[vaxIndex] = { ...vax, applied: e.target.checked };
+                              updateVisit(index, 'vaccinations', newVax);
+                            }}
+                          />
+                          Applied
+                        </label>
+                        <button
+                          onClick={() => {
+                            const newVax = [...(visit.vaccinations || [])];
+                            newVax.splice(vaxIndex, 1);
+                            updateVisit(index, 'vaccinations', newVax);
+                          }}
+                          className="text-red-500 hover:text-red-700"
+                        >
+                          <Trash2 className="w-3 h-3" />
+                        </button>
+                      </div>
+                    ))}
+                    <button
+                      onClick={() => updateVisit(index, 'vaccinations', [...(visit.vaccinations || []), { vaccine_name: '', applied: true }])}
+                      className="text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1"
+                    >
+                      <Plus className="w-3 h-3" /> Add Vaccination
+                    </button>
+                  </div>
+
                   {/* Treatment / Medications */}
                   <div className="col-span-12">
                     <label className="block text-xs font-medium text-gray-500 mb-1 flex items-center gap-1">
@@ -320,23 +508,55 @@ export const MedicalRecordEditor: React.FC<MedicalRecordEditorProps> = ({ initia
                     </label>
                     {visit.treatment?.map((med, medIndex) => (
                       <div key={medIndex} className="flex gap-2 mb-2 items-start bg-blue-50 p-2 rounded">
-                        <div className="grid grid-cols-2 gap-2 flex-1">
-                          <input
-                            placeholder="Name"
-                            value={med.name}
-                            onChange={(e) => {
-                              const newTreatment = [...(visit.treatment || [])];
-                              newTreatment[medIndex] = { ...med, name: e.target.value };
-                              updateVisit(index, 'treatment', newTreatment);
-                            }}
-                            className="rounded border-gray-300 text-xs p-1"
-                          />
+                        <div className="grid grid-cols-6 gap-2 flex-1">
+                          <div className="col-span-2">
+                            <input
+                              placeholder="Name"
+                              value={med.name}
+                              onChange={(e) => {
+                                const newTreatment = [...(visit.treatment || [])];
+                                newTreatment[medIndex] = { ...med, name: e.target.value };
+                                updateVisit(index, 'treatment', newTreatment);
+                              }}
+                              className="w-full rounded border-gray-300 text-xs p-1"
+                            />
+                          </div>
                           <input
                             placeholder="Dosage"
                             value={med.dosage || ''}
                             onChange={(e) => {
                               const newTreatment = [...(visit.treatment || [])];
                               newTreatment[medIndex] = { ...med, dosage: e.target.value };
+                              updateVisit(index, 'treatment', newTreatment);
+                            }}
+                            className="rounded border-gray-300 text-xs p-1"
+                          />
+                          <input
+                            placeholder="Frequency"
+                            value={med.frequency || ''}
+                            onChange={(e) => {
+                              const newTreatment = [...(visit.treatment || [])];
+                              newTreatment[medIndex] = { ...med, frequency: e.target.value };
+                              updateVisit(index, 'treatment', newTreatment);
+                            }}
+                            className="rounded border-gray-300 text-xs p-1"
+                          />
+                          <input
+                            placeholder="Duration"
+                            value={med.duration || ''}
+                            onChange={(e) => {
+                              const newTreatment = [...(visit.treatment || [])];
+                              newTreatment[medIndex] = { ...med, duration: e.target.value };
+                              updateVisit(index, 'treatment', newTreatment);
+                            }}
+                            className="rounded border-gray-300 text-xs p-1"
+                          />
+                          <input
+                            placeholder="Route"
+                            value={med.route || ''}
+                            onChange={(e) => {
+                              const newTreatment = [...(visit.treatment || [])];
+                              newTreatment[medIndex] = { ...med, route: e.target.value };
                               updateVisit(index, 'treatment', newTreatment);
                             }}
                             className="rounded border-gray-300 text-xs p-1"

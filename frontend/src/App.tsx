@@ -45,9 +45,9 @@ function App() {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className={`flex-1 w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 ${!uploadedFile ? 'max-w-7xl' : 'max-w-full'}`}>
         {error && (
-          <div className="mb-6 bg-red-50 border-l-4 border-red-400 p-4 flex items-center">
+          <div className="mb-6 bg-red-50 border-l-4 border-red-400 p-4 flex items-center max-w-7xl mx-auto">
             <AlertCircle className="w-5 h-5 text-red-400 mr-2" />
             <p className="text-sm text-red-700">{error}</p>
           </div>
@@ -66,7 +66,7 @@ function App() {
             <FileUpload onUpload={handleUpload} isUploading={isUploading} />
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 h-[calc(100vh-12rem)]">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 h-[calc(100vh-8rem)]">
             {/* Left Column: Preview */}
             <div className="h-full overflow-hidden">
               <DocumentPreview document={document} file={uploadedFile} />

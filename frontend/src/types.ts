@@ -2,14 +2,19 @@ export interface PetInfo {
   name?: string;
   species?: string;
   breed?: string;
-  age?: string;
-  weight?: string;
+  birth_date?: string;
+  sex?: string;
+  reproductive_status?: string;
+  weight?: number;
+  microchip?: string;
+  hair_type?: string;
+  coat_color?: string;
 }
 
 export interface VeterinaryInfo {
-  name?: string;
-  address?: string;
-  phone?: string;
+  clinic_name?: string;
+  clinic_address?: string;
+  clinic_phone?: string;
 }
 
 export interface PhysicalExamination {
