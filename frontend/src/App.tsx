@@ -3,11 +3,14 @@ import axios from 'axios';
 import { FileUpload } from './components/FileUpload';
 import { DocumentPreview } from './components/DocumentPreview';
 import { MedicalRecordEditor } from './components/MedicalRecordEditor';
-import { DocumentResponse } from './types';
+import { SuccessModal } from './components/SuccessModal';
+import { MedicalRecord, DocumentResponse } from './types';
 import { Activity, AlertCircle, Loader2 } from 'lucide-react';
 
 function App() {
   const [isUploading, setIsUploading] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [document, setDocument] = useState<DocumentResponse | null>(null);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -34,8 +37,37 @@ function App() {
     }
   };
 
+  const handleSaveToDatabase = async (data: MedicalRecord) => {
+    if (!document?.document_id) return;
+    
+    setIsSaving(true);
+    setError(null);
+    
+    try {
+      const response = await axios.put<DocumentResponse>(`/api/v1/document/${document.document_id}`, data);
+      setDocument(response.data);
+      setShowSuccessModal(true);
+    } catch (err) {
+      console.error(err);
+      setError('Failed to save changes. Please try again.');
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleReset = () => {
+    setUploadedFile(null);
+    setDocument(null);
+    setError(null);
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
+      <SuccessModal 
+        isOpen={showSuccessModal} 
+        onClose={() => setShowSuccessModal(false)} 
+        message="Document has been updated successfully." 
+      />
       {/* Header */}
       <header className="bg-white shadow-sm z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center">
@@ -78,10 +110,12 @@ function App() {
                 <MedicalRecordEditor 
                   initialData={document.medical_record} 
                   onSave={(newData) => {
-                    // In a real app, we would save this back to the server
-                    console.log('Updated data:', newData);
+                    // Update local state immediately for UI responsiveness
                     setDocument(prev => prev ? { ...prev, medical_record: newData } : null);
                   }}
+                  onSaveToDatabase={handleSaveToDatabase}
+                  isSaving={isSaving}
+                  onUploadNew={handleReset}
                 />
               ) : (
                 <div className="h-full flex flex-col items-center justify-center bg-white rounded-lg shadow p-8 text-center">

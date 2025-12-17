@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { MedicalRecord, Visit, PhysicalExamination } from '../types';
-import { Stethoscope, User, Calendar, Plus, Trash2, Activity, Pill } from 'lucide-react';
+import { Stethoscope, User, Calendar, Plus, Trash2, Activity, Pill, Save, Upload } from 'lucide-react';
 
 interface MedicalRecordEditorProps {
   initialData?: MedicalRecord;
   onSave?: (data: MedicalRecord) => void;
+  onSaveToDatabase?: (data: MedicalRecord) => Promise<void>;
+  isSaving?: boolean;
+  onUploadNew?: () => void;
 }
 
-export const MedicalRecordEditor: React.FC<MedicalRecordEditorProps> = ({ initialData, onSave }) => {
+export const MedicalRecordEditor: React.FC<MedicalRecordEditorProps> = ({ initialData, onSave, onSaveToDatabase, isSaving, onUploadNew }) => {
   const [data, setData] = useState<MedicalRecord>(initialData || {});
 
   useEffect(() => {
@@ -602,6 +605,32 @@ export const MedicalRecordEditor: React.FC<MedicalRecordEditorProps> = ({ initia
             )}
           </div>
         </section>
+
+        {/* Save Button */}
+        <div className="sticky bottom-0 bg-white border-t p-4 -mx-6 -mb-6 flex justify-between z-10">
+          <button
+            onClick={onUploadNew}
+            className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            <Upload className="w-4 h-4 mr-2" />
+            Upload New Document
+          </button>
+
+          <button
+            onClick={() => onSaveToDatabase?.(data)}
+            disabled={isSaving}
+            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isSaving ? (
+              <>Saving...</>
+            ) : (
+              <>
+                <Save className="w-4 h-4 mr-2" />
+                Save Changes
+              </>
+            )}
+          </button>
+        </div>
       </div>
     </div>
   );
