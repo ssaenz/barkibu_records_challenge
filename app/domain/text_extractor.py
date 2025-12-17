@@ -1,10 +1,7 @@
-"""Text Extractor interface - Contract for text extraction implementations"""
-
 from abc import ABC, abstractmethod
 
 
 class TextExtractor(ABC):
-    """Interface for extracting text from documents"""
 
     @abstractmethod
     def extract_text(self, file_data: bytes, file_type: str) -> str:

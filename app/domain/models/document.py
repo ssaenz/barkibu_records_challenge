@@ -1,7 +1,8 @@
-"""Core domain models - Pure Python objects, no external dependencies"""
-
 from datetime import datetime, timezone
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from app.domain.models.medical_record import MedicalRecord
 
 
 class Document:
@@ -14,6 +15,7 @@ class Document:
         file_size: int,
         file_data: bytes,
         extracted_text: Optional[str] = None,
+        medical_record: Optional["MedicalRecord"] = None,
         created_at: Optional[datetime] = None,
         updated_at: Optional[datetime] = None,
     ):
@@ -23,6 +25,7 @@ class Document:
         self.file_size = file_size
         self.file_data = file_data
         self.extracted_text = extracted_text
+        self.medical_record = medical_record
         self.created_at = created_at or datetime.now(timezone.utc)
         self.updated_at = updated_at or datetime.now(timezone.utc)
 

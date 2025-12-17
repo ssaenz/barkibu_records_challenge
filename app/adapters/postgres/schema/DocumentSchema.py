@@ -1,7 +1,31 @@
 from datetime import datetime, timezone
-from sqlalchemy import Column, String, Integer, DateTime, Text, LargeBinary
+from dataclasses import asdict, is_dataclass
+from typing import Any
+from sqlalchemy import Column, String, Integer, DateTime, Text, LargeBinary, JSON
 from app.adapters.postgres.database import Base
 from app.domain.models.document import Document
+
+
+def serialize_dataclass(obj: Any) -> Any:
+    if obj is None:
+        return None
+
+    if isinstance(obj, datetime):
+        return obj.isoformat()
+
+    if isinstance(obj, list):
+        return [serialize_dataclass(item) for item in obj]
+
+    if is_dataclass(obj):
+        result = {}
+        for key, value in asdict(obj).items():
+            result[key] = serialize_dataclass(value)
+        return result
+
+    if isinstance(obj, dict):
+        return {key: serialize_dataclass(value) for key, value in obj.items()}
+
+    return obj
 
 
 class DocumentSchema(Base):
@@ -13,6 +37,7 @@ class DocumentSchema(Base):
     file_size = Column(Integer, nullable=False)
     file_data = Column(LargeBinary, nullable=False)
     extracted_text = Column(Text, nullable=True)
+    medical_record_data = Column(JSON, nullable=True)
     created_at = Column(
         DateTime, nullable=False, default=lambda: datetime.now(timezone.utc)
     )
@@ -35,6 +60,12 @@ class DocumentSchema(Base):
         orm.file_size = domain.file_size
         orm.file_data = domain.file_data
         orm.extracted_text = domain.extracted_text
+        # Serialize MedicalRecord dataclass to JSON-compatible dict (adapter layer responsibility)
+        orm.medical_record_data = (
+            serialize_dataclass(domain.medical_record)
+            if domain.medical_record
+            else None
+        )
         orm.created_at = domain.created_at
         orm.updated_at = domain.updated_at
         return orm

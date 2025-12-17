@@ -11,7 +11,6 @@ dependencies = [
     "uvicorn",
     "pytest",
     "httpx",
-    "boto3",
     "python-multipart",
     "pydantic",
     "pydantic-settings",
@@ -22,8 +21,15 @@ dependencies = [
     "pdf2image>=1.16.3",
     "pillow>=10.0.0",
     "python-docx>=0.8.11",
-    "moto[s3]>=4.2.0"
+    "spacy>=3.7.0"
 ]
+
+[tool.setuptools]
+packages = ["app"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+markers = [
+    "integration: Integration tests requiring Docker",
+    "slow: Slow tests taking >5 seconds"
+]

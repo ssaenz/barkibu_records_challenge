@@ -1,6 +1,8 @@
 from pydantic import BaseModel, Field, ConfigDict
 from datetime import datetime
+from typing import Optional, Any
 from app.domain.models.document import Document
+from app.adapters.postgres.schema.DocumentSchema import serialize_dataclass
 
 
 class DocumentUploadResponse(BaseModel):
@@ -9,6 +11,12 @@ class DocumentUploadResponse(BaseModel):
     filename: str = Field(..., description="Original filename")
     file_type: str = Field(..., description="File type (pdf, jpg, docx, txt, etc.)")
     file_size: int = Field(..., description="File size in bytes")
+    extracted_text: Optional[str] = Field(
+        None, description="Text extracted from document"
+    )
+    medical_record: Optional[dict[str, Any]] = Field(
+        None, description="Structured medical record data extracted from document"
+    )
     created_at: datetime = Field(..., description="Creation timestamp")
 
     @staticmethod
@@ -18,5 +26,11 @@ class DocumentUploadResponse(BaseModel):
             filename=document.filename,
             file_type=document.file_type,
             file_size=document.file_size,
+            extracted_text=document.extracted_text,
+            medical_record=(
+                serialize_dataclass(document.medical_record)
+                if document.medical_record
+                else None
+            ),
             created_at=document.created_at,
         )

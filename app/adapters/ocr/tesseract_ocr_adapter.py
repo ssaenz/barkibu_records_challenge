@@ -1,5 +1,3 @@
-"""Tesseract OCR Adapter - Implementation of TextExtractor using Tesseract"""
-
 import pytesseract
 from pdf2image import convert_from_bytes
 from PIL import Image
@@ -19,11 +17,8 @@ class TesseractOCRAdapter(TextExtractor):
             elif file_type.lower() == "docx":
                 return self._extract_from_docx(file_data)
             else:
-                # Unsupported file type - return empty string
                 return ""
         except Exception as e:
-            # OCR failed - return empty string instead of crashing
-            # This allows the document to be stored even if OCR fails
             return ""
 
     def _extract_from_pdf(self, file_data: bytes) -> str:
@@ -47,6 +42,4 @@ class TesseractOCRAdapter(TextExtractor):
                 text += paragraph.text + "\n"
             return text.strip()
         except ImportError:
-            raise Exception(
-                "python-docx not installed. Install with: pip install python-docx"
-            )
+            raise Exception("python-docx not installed")

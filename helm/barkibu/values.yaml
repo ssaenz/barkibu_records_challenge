@@ -25,3 +25,9 @@ resources:
 
 app:
   name: barkibu
+
+# Application environment variables
+env:
+  DATABASE_URL: "postgresql://user:password@postgres:5432/barkibu"
+  ENVIRONMENT: "production"
+

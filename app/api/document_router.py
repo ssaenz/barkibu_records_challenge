@@ -5,7 +5,7 @@ from app.core.dependencies import get_document_service
 
 router = APIRouter()
 
-MAX_FILE_SIZE_BYTES = 50 * 1024 * 1024  # 50MB
+MAX_FILE_SIZE_BYTES = 50 * 1024 * 1024
 ALLOWED_EXTENSIONS = {"pdf", "jpg", "jpeg", "png", "docx", "txt"}
 
 
