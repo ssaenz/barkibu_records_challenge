@@ -2,20 +2,32 @@
 
 This repository contains the source code for the Barkibu application, including the backend API, frontend application, and infrastructure configuration.
 
-## Project Structure
+## High level Code organization
 
 - `backend/`: FastAPI application (Python)
 - `frontend/`: React application (TypeScript)
 - `helm/`: Kubernetes Helm charts for deployment
 
-## Getting Started
+## Local Deployment (Minikube)
 
-Please refer to the README files in each directory for specific instructions:
+### System Requirements
 
-- [Backend Documentation](backend/README.md)
-- [Frontend Documentation](frontend/README.md)
+To run this application locally, you will need the following tools installed on your system. A setup script is provided to install them automatically on macOS.
 
-## Full Stack Deployment (Minikube)
+- **Docker**: Container runtime.
+- **Minikube**: Local Kubernetes cluster.
+- **Kubectl**: Kubernetes command-line tool.
+- **Helm**: Package manager for Kubernetes.
+
+### Automated Setup (macOS)
+
+You can use the provided script to install dependencies and deploy the application in one go:
+
+```bash
+./setup_and_run.sh
+```
+
+### Manual Deployment
 
 1. Start Minikube:
    ```bash
@@ -25,16 +37,12 @@ Please refer to the README files in each directory for specific instructions:
 
 2. Build Backend Image:
    ```bash
-   cd backend
-   docker build -t barkibu:latest .
-   cd ..
+   docker build -t barkibu-backend:latest backend
    ```
 
 3. Build Frontend Image:
    ```bash
-   cd frontend
-   docker build -t barkibu-frontend:latest .
-   cd ..
+   docker build -t barkibu-frontend:latest frontend
    ```
 
 4. Deploy with Helm:
@@ -43,6 +51,7 @@ Please refer to the README files in each directory for specific instructions:
    ```
 
 5. Access the Application:
-   - Backend API: `minikube service barkibu-service --url`
-   - Frontend: `minikube service barkibu-frontend --url`
+   ```bash
+   minikube service barkibu-frontend
+   ```
 

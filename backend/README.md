@@ -1,16 +1,4 @@
-# Barkibu Medical Records Processing System
-
-An intelligent system for extracting and structuring veterinary medical records from various document formats (PDF, images, Word, etc.).
-
-## Overview
-
-Barkibu helps veterinarians quickly access and interpret medical information by:
-
-- Uploading documents in any format (PDF, JPG, PNG, DOCX, TXT)
-- Automatically extracting text content
-- Structuring medical data (diagnoses, treatments, pet info, dates)
-- Reviewing and editing extracted information
-- Accessing standardized medical records
+# Barkibu Medical Records API
 
 ## Prerequisites & Local Development Setup
 
@@ -19,6 +7,8 @@ Barkibu helps veterinarians quickly access and interpret medical information by:
 Before starting, ensure you have the following tools installed:
 
 #### 1. Python 3.12+
+
+NOTE: This is only required for local execution. To run with docker this depencency can be skiped.
 
 Check if installed:
 
